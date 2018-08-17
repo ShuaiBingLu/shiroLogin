@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bin2.web.dao.UserDao">
+	<resultMap id="baseResultMap" type="cn.bin2.web.entity.User">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+		<result column="nickname" property="nickName" jdbcType="VARCHAR"/>
+		<result column="username" property="userName" jdbcType="VARCHAR"/>
+		<result column="userpwd" property="userPwd" jdbcType="VARCHAR"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/> 
+		<result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+		<result column="status" property="loginStatus"/>
+		
+	</resultMap>
+	<sql id="base_column">
+		id,nickname,username,userpwd,create_time,last_login_time,status
+	</sql>
+	<select id="userLogin" resultMap="baseResultMap">
+		select
+		<include refid="base_column"></include>
+		from user
+		where username=#{userName} and userpwd=#{userPwd}
+	</select>
+	<update id="updateLoginTime" parameterType="cn.bin2.web.entity.User">
+		update user
+		set 
+		 last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP}
+		 where id=#{id,jdbcType=BIGINT}
+	</update>
+</mapper>
